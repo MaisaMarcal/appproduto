@@ -40,31 +40,30 @@ public class ProdutoRestController {
         return "Produto " + produto.getCod() + "recebido com sucesso" ;
 
     }
-
     @PostMapping("/json")
     public String dado(@RequestBody Map<String, Object> dado) {
-        System.out.println("JSON recebido" + dado);
-
-        //Processamento especifico
+        System.out.println("JSON recebido: " + dado);
+    
+        // Pegando valores do JSON
         Object nome = dado.get("User name");
-        String linha = dado.get();
-                
+        
+        // Convertendo para String (evita NullPointerException)
+        String linha = nome != null ? nome.toString() : "sem_nome";
+    
         try {
             BufferedWriter writer = new BufferedWriter(
-                    new FileWriter("dados.txt", true)); // true = adicionar no final
+                    new FileWriter("dados.txt", true)); // true = append
             writer.write(linha);
             writer.newLine();
             writer.close();
-
+    
         } catch (IOException e) {
             e.printStackTrace();
-            return "Erro ao salvar produto";
-
-        
-       
+            return "Erro ao salvar dados";
+        }
+    
+        return "dados recebidos com sucesso";
     }
-    return "Dados JSON recebidos com sucesso";
     
     
-}
 }
